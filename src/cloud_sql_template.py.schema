@@ -1,0 +1,22 @@
+info:
+  title: Cloud Sql Template
+  description: Creates a cloud sql instance
+
+imports:
+  - path: env_variables.py
+
+required:
+  - rootPassword
+
+properties:
+  environment:
+    type: string
+    default: "dev"
+    enum:
+      - "dev"
+      - "stg"
+      - "prod"
+
+  rootPassword:
+    type: string
+    minLength: 12
