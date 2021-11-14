@@ -1,0 +1,27 @@
+info:
+  title: Cloud SQL instance template
+  description: Creates the cloud sql instance
+
+imports:
+  - path: env_variables.py
+
+required:
+  - rootPassword
+
+properties:
+  environment:
+    type: string
+    default: "dev"
+    enum:
+      - "dev"
+      - "stg"
+      - "prod"
+
+  rootPassword:
+    type: string
+    minLength: 12
+
+outputs:
+  createdInstanceId:
+    type: string
+    description: The id of instance created on this deployment

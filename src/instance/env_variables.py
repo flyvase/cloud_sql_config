@@ -1,4 +1,4 @@
-def get_env_variables(env):
+def get_variables(env):
     if env == "dev" or env == "stg":
         return {
             "instanceType": "db-custom-1-3840",
