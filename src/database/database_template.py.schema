@@ -1,0 +1,10 @@
+info:
+  title: Cloud SQL database template
+  description: Creates the cloud sql database
+
+required:
+  - instanceId
+
+properties:
+  instanceId:
+    type: string
