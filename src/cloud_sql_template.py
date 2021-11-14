@@ -1,29 +1,22 @@
-import env_variables
-
-# see https://cloud.google.com/sql/docs/mysql/admin-api/rest/v1beta4/instances#DatabaseInstance for properties
 def generate_config(context):
-    imports = [{"path": "env_variables.py"}]
-    variables = env_variables.get_env_variables(context.properties["environment"])
+    imports = [
+        {"path": "instance/instance_template.py", "name": "instance_template.py"},
+        {"path": "database/database_template.py", "name": "database_template.py"},
+    ]
     resources = [
         {
-            "name": "mr_president",
-            "type": "sqladmin.v1beta4.instance",
+            "name": "mr_president_instance",
+            "type": "instance_template.py",
             "properties": {
-                "databaseVersion": "MYSQL_8_0",
-                "settings": {
-                    "tier": variables["instanceType"],
-                    "availabilityType": variables["availabilityType"],
-                    "backupConfiguration": {
-                        "enabled": variables["enableBackup"],
-                        "binaryLogEnabled": variables["enableBackup"]
-                        and variables["enableBinaryLog"],
-                        "location": "asia-northeast1",
-                    },
-                    "dataDiskSizeGb": variables["diskSize"],
-                },
-                "name": "mr-president1",
-                "region": "asia-northeast1",
+                "environment": context.properties["environment"],
                 "rootPassword": context.properties["rootPassword"],
+            },
+        },
+        {
+            "name": "mr_president_database",
+            "type": "database_template.py",
+            "properties": {
+                "instanceId": "$(ref.mr_president_instance.createdInstanceId)"
             },
         },
     ]
