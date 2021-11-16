@@ -1,0 +1,27 @@
+info:
+  title: mr_president
+  description: Configuration of databases for Flyvase
+
+imports:
+  - path: env_variables.py
+
+required:
+  - rootPassword
+  - harvestPassword
+
+properties:
+  environment:
+    type: string
+    default: dev
+    enum:
+      - dev
+      - stg
+      - prod
+
+  rootPassword:
+    type: string
+    minLength: 12
+
+  harvestPassword:
+    type: string
+    minLength: 12
