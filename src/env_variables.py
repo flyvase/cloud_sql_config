@@ -5,7 +5,7 @@ def get_variables(env):
             "availabilityType": "ZONAL",
             "enableBackup": False,
             "enableBinaryLog": False,
-            "diskSize": 10,
+            "diskSize": 100,
         }
     elif env == "prod":
         return {

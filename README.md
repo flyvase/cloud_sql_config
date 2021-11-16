@@ -20,21 +20,28 @@ secretmanager.googleapis.com \
 --project $PROJECT_ID
 ```
 
-### add database password to secret manager
+### add passwords to secret manager
 
-You should generate strong random password on generator first.
+Generate the random password (min length 12) and use the command below to deploy to secret manager.
+Do not include `-`, `*`, `!`, `#`, `%`, `~`, `|`, `$` and `&` to your password (due to syntax of yaml and printf command)
 
 ```zsh
 printf "YOUR_PASSWORD" | gcloud secrets create "mr_president_root_password" --data-file=- --project $PROJECT_ID
+printf "YOUR_PASSWORD" | gcloud secrets create "mr_president_harvest_password" --data-file=- --project $PROJECT_ID
 ```
 
 ## deploy resources to local env
 
 ```zsh
+export ROOT_PASSWORD=$(gcloud secrets versions access latest --secret=mr_president_root_password --project $PROJECT_ID) \
+export HARVEST_PASSWORD=$(gcloud secrets versions access latest --secret=mr_president_harvest_password --project $PROJECT_ID)
+```
+
+```zsh
 gcloud deployment-manager deployments create mr-president \
---template src/cloud_sql_template.py \
+--template src/deployment.py \
 --properties \
-"rootPassword:'$(gcloud secrets versions access latest --secret=mr_president_root_password --project $PROJECT_ID)'" \
+"rootPassword:'$ROOT_PASSWORD',harvestPassword:'$HARVEST_PASSWORD'" \
 --automatic-rollback-on-error \
 --project $PROJECT_ID
 ```
