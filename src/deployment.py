@@ -34,6 +34,7 @@ def generate_config(context):
             "properties": {
                 "instance": "$(ref.mr_president_instance.name)",
                 "charset": "utf8mb4",
+                "collation": "utf8mb4_bin",
                 "name": "mr_president",
             },
         },
