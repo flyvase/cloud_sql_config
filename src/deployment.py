@@ -23,7 +23,7 @@ def generate_config(context):
                     },
                     "dataDiskSizeGb": variables["diskSize"],
                 },
-                "name": "mr-president13",
+                "name": "mr-president",
                 "region": "asia-northeast1",
                 "rootPassword": context.properties["rootPassword"],
             },
