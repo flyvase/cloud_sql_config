@@ -30,7 +30,7 @@ printf "YOUR_PASSWORD" | gcloud secrets create "mr_president_root_password" --da
 printf "YOUR_PASSWORD" | gcloud secrets create "mr_president_harvest_password" --data-file=- --project $PROJECT_ID
 ```
 
-## deploy resources to local env
+## deploy resources on local env
 
 ```zsh
 export ROOT_PASSWORD=$(gcloud secrets versions access latest --secret=mr_president_root_password --project $PROJECT_ID) \
@@ -43,5 +43,15 @@ gcloud deployment-manager deployments create mr-president \
 --properties \
 "rootPassword:'$ROOT_PASSWORD',harvestPassword:'$HARVEST_PASSWORD'" \
 --automatic-rollback-on-error \
+--project $PROJECT_ID
+```
+
+## update resources on local env
+
+```zsh
+gcloud deployment-manager deployments update mr-president \
+--template src/deployment.py \
+--properties \
+"rootPassword:'$ROOT_PASSWORD',harvestPassword:'$HARVEST_PASSWORD'" \
 --project $PROJECT_ID
 ```
