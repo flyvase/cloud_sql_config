@@ -8,7 +8,7 @@ def generate_config(context):
     variables = env_variables.get_variables(context.properties["environment"])
     resources = [
         {
-            "name": "mr_president_instance",
+            "name": "cloud_sql_main_instance",
             "type": "sqladmin.v1beta4.instance",
             "properties": {
                 "databaseVersion": "MYSQL_8_0",
@@ -23,30 +23,30 @@ def generate_config(context):
                     },
                     "dataDiskSizeGb": variables["diskSize"],
                 },
-                "name": "mr-president",
+                "name": "main-instance",
                 "region": "asia-northeast1",
-                "rootPassword": context.properties["rootPassword"],
+                "rootPassword": context.properties["rootUserPassword"],
             },
         },
         {
-            "name": "mr_president_database",
+            "name": "cloud_sql_main_database",
             "type": "sqladmin.v1beta4.database",
             "properties": {
-                "instance": "$(ref.mr_president_instance.name)",
+                "instance": "$(ref.cloud_sql_main_instance.name)",
                 "charset": "utf8mb4",
                 "collation": "utf8mb4_bin",
-                "name": "mr_president",
+                "name": "main_database",
             },
         },
         {
-            "name": "mr_president_user_harvest",
+            "name": "cloud_sql_user_api_server",
             "type": "sqladmin.v1beta4.user",
             "properties": {
-                "instance": "$(ref.mr_president_instance.name)",
-                "name": "harvest",
-                "password": context.properties["harvestPassword"],
+                "instance": "$(ref.cloud_sql_main_instance.name)",
+                "name": "api_server",
+                "password": context.properties["apiServerUserPassword"],
             },
-            "metadata": {"dependsOn": ["mr_president_database"]},
+            "metadata": {"dependsOn": ["cloud_sql_main_database"]},
         },
     ]
 

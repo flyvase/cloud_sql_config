@@ -1,13 +1,13 @@
 info:
-  title: mr_president
+  title: cloud sql config
   description: Configuration of databases for Flyvase
 
 imports:
   - path: env_variables.py
 
 required:
-  - rootPassword
-  - harvestPassword
+  - rootUserPassword
+  - apiServerUserPassword
 
 properties:
   environment:
@@ -15,13 +15,12 @@ properties:
     default: dev
     enum:
       - dev
-      - stg
       - prod
 
-  rootPassword:
+  rootUserPassword:
     type: string
     minLength: 12
 
-  harvestPassword:
+  apiServerUserPassword:
     type: string
     minLength: 12

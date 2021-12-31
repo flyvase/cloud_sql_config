@@ -1,5 +1,5 @@
 def get_variables(env):
-    if env == "dev" or env == "stg":
+    if env == "dev":
         return {
             "instanceType": "db-custom-1-3840",
             "availabilityType": "ZONAL",
