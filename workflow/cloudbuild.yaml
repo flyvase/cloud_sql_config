@@ -1,0 +1,24 @@
+steps:
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: '/bin/ash'
+    args:
+      [
+        '-c',
+        'gcloud secrets versions access latest --secret=cloud_sql_root_user_password > /workspace/root_user_password.txt',
+      ]
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: '/bin/ash'
+    args:
+      [
+        '-c',
+        'gcloud secrets versions access latest --secret=cloud_sql_api_server_user_password > /workspace/api_server_user_password.txt',
+      ]
+
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk:alpine'
+    entrypoint: '/bin/ash'
+    args:
+      [
+        '-c',
+        'gcloud deployment-manager deployments update cloud-sql --template src/deployment.py --properties "rootUserPassword:\"$(cat /workspace/root_user_password.txt)\",apiServerUserPassword:\"$(cat /workspace/api_server_user_password.txt)\",environment:\"prod\""',
+      ]
